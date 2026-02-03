@@ -1,6 +1,10 @@
+const checkbox = document.getElementById('checkbox');
+checkbox.addEventListener('change', () => {
+  document.body.classList.toggle('dark-mode');
+});
 
-const generatorBtn = document.getElementById('generatorBtn');
-const numbersDiv = document.getElementById('numbers');
+const generatorBtn = document.getElementById('draw-btn');
+const numbersDiv = document.getElementById('ball-container');
 
 generatorBtn.addEventListener('click', () => {
   numbersDiv.innerHTML = '';
@@ -14,7 +18,7 @@ generatorBtn.addEventListener('click', () => {
 
   for (const number of sortedNumbers) {
     const circle = document.createElement('div');
-    circle.classList.add('circle');
+    circle.classList.add('ball');
     const color = getColor(number);
     circle.style.backgroundColor = color;
     circle.textContent = number;
