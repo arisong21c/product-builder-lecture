@@ -6,19 +6,30 @@
   <title>로또 번호 추천기 (6/45) - 5세트</title>
   <meta name="description" content="버튼 한 번으로 6/45 로또 번호 5세트를 랜덤 추천합니다." />
   <style>
-    :root{
-      --bg:#0b1220;
-      --card:#101a2f;
-      --text:#e8eefc;
-      --muted:#a8b3d6;
-      --line:rgba(255,255,255,.12);
-      --accent1:#6ee7ff;
-      --accent2:#a78bfa;
+    :root {
+      --bg-dark: #0b1220;
+      --card-dark: #101a2f;
+      --text-dark: #e8eefc;
+      --muted-dark: #a8b3d6;
+      --line-dark: rgba(255, 255, 255, .12);
+
+      --bg-light: #f0f2f5;
+      --card-light: #ffffff;
+      --text-light: #1c1e21;
+      --muted-light: #606770;
+      --line-light: rgba(0, 0, 0, .1);
+
+      --accent1: #6ee7ff;
+      --accent2: #a78bfa;
     }
-    *{
-      box-sizing:border-box;
-    }
-    body{
+
+    body {
+      --bg: var(--bg-dark);
+      --card: var(--card-dark);
+      --text: var(--text-dark);
+      --muted: var(--muted-dark);
+      --line: var(--line-dark);
+
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
       color:var(--text);
@@ -33,12 +44,23 @@
       justify-content:center;
       padding:24px 14px;
     }
+
+    body.light-mode {
+      --bg: var(--bg-light);
+      --card: var(--card-light);
+      --text: var(--text-light);
+      --muted: var(--muted-light);
+      --line: var(--line-light);
+
+      background: var(--bg-light);
+    }
+
     .wrap{
       width:min(1000px, 100%);
     }
     .card{
       border:1px solid var(--line);
-      background:rgba(16,26,47,.78);
+      background:var(--card);
       border-radius:22px;
       padding:22px;
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
@@ -47,7 +69,7 @@
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; flex-wrap:wrap;
       padding-bottom:14px;
-      border-bottom:1px solid rgba(255,255,255,.10);
+      border-bottom:1px solid var(--line);
       margin-bottom:16px;
     }
     .brand{
@@ -60,6 +82,7 @@
     }
     h1{
       margin:0; font-size:20px; letter-spacing:-.2px;
+      color: var(--text);
     }
     .sub{
       margin:0; color:var(--muted); font-size:14px;
@@ -69,7 +92,7 @@
     }
     button{
       cursor:pointer;
-      border:1px solid rgba(255,255,255,.18);
+      border:1px solid var(--line);
       padding:10px 14px;
       border-radius:14px;
       background:rgba(255,255,255,.06);
@@ -94,6 +117,18 @@
       opacity:.6; cursor:not-allowed; transform:none;
     }
 
+    body.light-mode button {
+        background: rgba(0,0,0,.04);
+    }
+
+    body.light-mode button:hover {
+        background: rgba(0,0,0,.08);
+    }
+    
+    body.light-mode .primary {
+        color: #06101b;
+    }
+
     .content{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -101,10 +136,14 @@
       align-items:stretch;
     }
     .panel{
-      border:1px solid rgba(255,255,255,.10);
+      border:1px solid var(--line);
       background:rgba(255,255,255,.04);
       border-radius:18px;
       padding:16px;
+    }
+    
+    body.light-mode .panel {
+        background: rgba(0,0,0,.02);
     }
 
     /* 5세트 출력 */
@@ -115,11 +154,16 @@
       margin-top:10px;
     }
     .set{
-      border:1px solid rgba(255,255,255,.10);
+      border:1px solid var(--line);
       border-radius:16px;
       padding:12px;
       background:rgba(0,0,0,.12);
     }
+
+    body.light-mode .set {
+        background: rgba(0,0,0,.05);
+    }
+
     .set-head{
       display:flex; justify-content:space-between; align-items:center;
       gap:10px; flex-wrap:wrap;
@@ -209,13 +253,18 @@
     }
     .tag{
       display:inline-flex; gap:8px; align-items:center;
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid var(--line);
       background: rgba(255,255,255,.06);
       padding:6px 10px;
       border-radius: 999px;
       font-size:12px;
       color: var(--muted);
     }
+
+    body.light-mode .tag {
+        background: rgba(0,0,0,.04);
+    }
+
     .dot{
       width:10px; height:10px; border-radius:999px;
       border:1px solid rgba(255,255,255,.25);
@@ -242,8 +291,8 @@
       left: 50%;
       bottom: 18px;
       transform: translateX(-50%);
-      background: rgba(16,26,47,.92);
-      border:1px solid rgba(255,255,255,.14);
+      background: var(--card);
+      border:1px solid var(--line);
       color: var(--text);
       padding:10px 12px;
       border-radius: 14px;
@@ -278,6 +327,7 @@
           </div>
         </div>
         <div class="btn-row">
+          <button id="themeBtn" type="button">☀️</button>
           <button class="primary" id="pickBtn" type="button">🎲 번호 추천(5세트)</button>
           <button id="copyBtn" type="button" disabled>📋 5세트 복사</button>
           <button id="resetBtn" type="button">🔄 기록 지우기</button>
@@ -481,6 +531,25 @@
 
       showToast("기록을 지웠어요.");
     });
+
+    const themeBtn = $("themeBtn");
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      const isLight = document.body.classList.contains("light-mode");
+      themeBtn.textContent = isLight ? "🌙" : "☀️";
+      try {
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      } catch (e) {}
+    });
+
+    try {
+      const preferredTheme = localStorage.getItem('theme');
+      if (preferredTheme === 'light') {
+        document.body.classList.add("light-mode");
+        themeBtn.textContent = "🌙";
+      }
+    } catch (e) {}
+
   </script>
 </body>
 </html>
