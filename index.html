@@ -66,12 +66,19 @@
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
     }
     header{
-      display:flex; align-items:center; justify-content:space-between;
+      display:flex; align-items:flex-start; justify-content:space-between;
       gap:12px; flex-wrap:wrap;
       padding-bottom:14px;
       border-bottom:1px solid var(--line);
       margin-bottom:16px;
-  
+    }
+    .header-right-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .main-nav {
+      margin-bottom: 10px; /* Space between nav and btn-row */
     }
     .brand{
       display:flex; align-items:center; gap:10px;
@@ -328,12 +335,16 @@
             <p class="sub">“번호 추천”을 누르면 6개 번호가 들어있는 세트가 <b>한 번에 5개</b> 나와요.</p>
           </div>
         </div>
-        <div class="btn-row">
-          <a href="today-menu.html" class="button-like">🍽️ 오늘 뭐먹지?</a>
-          <button id="themeBtn" type="button">☀️</button>
-          <button class="primary" id="pickBtn" type="button">🎲 번호 추천(5세트)</button>
-          <button id="copyBtn" type="button" disabled>📋 5세트 복사</button>
-          <button id="resetBtn" type="button">🔄 기록 지우기</button>
+        <div class="header-right-controls">
+          <nav class="main-nav">
+            <a href="today-menu.html" class="button-like">🍽️ 오늘 뭐먹지?</a>
+          </nav>
+          <div class="btn-row">
+            <button id="themeBtn" type="button">☀️</button>
+            <button class="primary" id="pickBtn" type="button">🎲 번호 추천(5세트)</button>
+            <button id="copyBtn" type="button" disabled>📋 5세트 복사</button>
+            <button id="resetBtn" type="button">🔄 기록 지우기</button>
+          </div>
         </div>
       </header>
 
