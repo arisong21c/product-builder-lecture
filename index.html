@@ -71,6 +71,7 @@
       padding-bottom:14px;
       border-bottom:1px solid var(--line);
       margin-bottom:16px;
+  
     }
     .brand{
       display:flex; align-items:center; gap:10px;
@@ -90,7 +91,7 @@
     .btn-row{
       display:flex; gap:10px; flex-wrap:wrap;
     }
-    button{
+    button, .button-like {
       cursor:pointer;
       border:1px solid var(--line);
       padding:10px 14px;
@@ -101,8 +102,9 @@
       font-size:14px;
       display:inline-flex; gap:8px; align-items:center;
       transition: transform .12s ease, background .12s ease, filter .12s ease;
+      text-decoration: none; /* For anchor tags */
     }
-    button:hover{
+    button:hover, .button-like:hover {
       transform: translateY(-1px); background:rgba(255,255,255,.10);
     }
     .primary{
@@ -117,7 +119,7 @@
       opacity:.6; cursor:not-allowed; transform:none;
     }
 
-    body.light-mode button {
+    body.light-mode button, body.light-mode .button-like {
         background: rgba(0,0,0,.04);
     }
 
@@ -327,6 +329,7 @@
           </div>
         </div>
         <div class="btn-row">
+          <a href="today-menu.html" class="button-like">🍽️ 오늘 뭐먹지?</a>
           <button id="themeBtn" type="button">☀️</button>
           <button class="primary" id="pickBtn" type="button">🎲 번호 추천(5세트)</button>
           <button id="copyBtn" type="button" disabled>📋 5세트 복사</button>
