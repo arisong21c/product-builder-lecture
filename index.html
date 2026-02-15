@@ -3,24 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>로또 번호 추천기 (6/45) - 5세트</title>
-  <meta name="description" content="버튼 한 번으로 6/45 로또 번호 5세트를 랜덤 추천합니다." />
+  <title>오늘 뭐먹지? - 메뉴 추천 사이트</title>
+  <meta name="description" content="매일 고민되는 점심, 저녁 메뉴! 오늘 뭐먹지?가 바로 추천해드립니다. 한식, 중식, 일식, 양식 등 다양한 메뉴를 확인해보세요." />
   <style>
     :root {
+      --accent1: #6ee7ff;
+      --accent2: #a78bfa;
+
       --bg-dark: #0b1220;
       --card-dark: #101a2f;
       --text-dark: #e8eefc;
       --muted-dark: #a8b3d6;
       --line-dark: rgba(255, 255, 255, .12);
+      --bg-gradient-start-dark: #070b14;
 
       --bg-light: #f0f2f5;
       --card-light: #ffffff;
       --text-light: #1c1e21;
       --muted-light: #606770;
       --line-light: rgba(0, 0, 0, .1);
-
-      --accent1: #6ee7ff;
-      --accent2: #a78bfa;
+      --bg-gradient-start-light: #f0f2f5;
     }
 
     body {
@@ -29,6 +31,7 @@
       --text: var(--text-dark);
       --muted: var(--muted-dark);
       --line: var(--line-dark);
+      --bg-gradient-start: var(--bg-gradient-start-dark);
 
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
@@ -36,12 +39,13 @@
       background:
         radial-gradient(1200px 800px at 15% 10%, rgba(110,231,255,.18), transparent 60%),
         radial-gradient(900px 700px at 85% 20%, rgba(167,139,250,.16), transparent 55%),
-        linear-gradient(180deg, #070b14, var(--bg));
+        linear-gradient(180deg, var(--bg-gradient-start), var(--bg));
       line-height:1.6;
       min-height:100vh;
       display:flex;
+      flex-direction: column;
       align-items:center;
-      justify-content:center;
+      justify-content:flex-start;
       padding:24px 14px;
     }
 
@@ -51,7 +55,7 @@
       --text: var(--text-light);
       --muted: var(--muted-light);
       --line: var(--line-light);
-
+      --bg-gradient-start: var(--bg-gradient-start-light);
       background: var(--bg-light);
     }
 
@@ -64,6 +68,8 @@
       border-radius:22px;
       padding:22px;
       box-shadow: 0 16px 50px rgba(0,0,0,.25);
+      width: 100%;
+      margin-top: 20px;
     }
     header{
       display:flex; align-items:flex-start; justify-content:space-between;
@@ -71,14 +77,6 @@
       padding-bottom:14px;
       border-bottom:1px solid var(--line);
       margin-bottom:16px;
-    }
-    .header-right-controls {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .main-nav {
-      margin-bottom: 10px; /* Space between nav and btn-row */
     }
     .brand{
       display:flex; align-items:center; gap:10px;
@@ -109,7 +107,7 @@
       font-size:14px;
       display:inline-flex; gap:8px; align-items:center;
       transition: transform .12s ease, background .12s ease, filter .12s ease;
-      text-decoration: none; /* For anchor tags */
+      text-decoration: none;
     }
     button:hover, .button-like:hover {
       transform: translateY(-1px); background:rgba(255,255,255,.10);
@@ -118,210 +116,62 @@
       border:none;
       background: linear-gradient(135deg, var(--accent1), var(--accent2));
       color:#06101b;
+      font-size: 16px;
+      padding: 12px 20px;
     }
     .primary:hover{
       filter:brightness(1.02);
-    }
-    button:disabled{
-      opacity:.6; cursor:not-allowed; transform:none;
     }
 
     body.light-mode button, body.light-mode .button-like {
         background: rgba(0,0,0,.04);
     }
-
-    body.light-mode button:hover {
+    body.light-mode button:hover, body.light-mode .button-like:hover {
         background: rgba(0,0,0,.08);
     }
-    
     body.light-mode .primary {
         color: #06101b;
     }
 
-    .content{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:14px;
-      align-items:stretch;
-    }
-    .panel{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      border-radius:18px;
-      padding:16px;
-    }
-    
-    body.light-mode .panel {
-        background: rgba(0,0,0,.02);
+    .main-cta {
+      text-align: center;
+      padding: 40px 0;
     }
 
-    /* 5세트 출력 */
-    .sets{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-      margin-top:10px;
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
     }
-    .set{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      background:rgba(0,0,0,.12);
-    }
-
-    body.light-mode .set {
-        background: rgba(0,0,0,.05);
-    }
-
-    .set-head{
-      display:flex; justify-content:space-between; align-items:center;
-      gap:10px; flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .set-title{
-      font-weight:900; letter-spacing:-.2px;
+    .menu-item {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
       color: var(--text);
-      font-size:14px;
+      text-decoration: none;
+      transition: all .2s ease;
     }
-    .set-nums{
-      color:var(--muted);
-      font-size:13px;
+    .menu-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, .08);
+      box-shadow: 0 8px 20px rgba(0,0,0,.1);
     }
-    .balls{
-      display:flex; flex-wrap:wrap; gap:10px;
-      min-height:54px;
-      align-items:center;
+    body.light-mode .menu-item {
+      background: rgba(0,0,0,.02);
     }
-
-    /* ---- 로또 공 스타일 (색상 포함) ---- */
-    .ball{
-      width:50px; height:50px;
-      border-radius:999px;
-      display:grid; place-items:center;
-      font-weight:900;
-      letter-spacing:-.3px;
-      font-size:17px;
-      user-select:none;
-      animation: pop .22s ease;
-
-      /* 공 느낌 */
-      color: #08101a;
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow:
-        inset 8px 10px 14px rgba(255,255,255,.35),
-        inset -10px -12px 18px rgba(0,0,0,.25),
-        0 10px 22px rgba(0,0,0,.30);
+    body.light-mode .menu-item:hover {
+      background: rgba(0,0,0,.05);
+    }
+    .main-nav {
+      display: flex;
+      gap: 10px;
     }
 
-    /* 실제 로또 구간 색감(1–10 노랑 / 11–20 파랑 / 21–30 빨강 / 31–40 회색 / 41–45 초록) */
-    .ball.yellow{
-      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.75), rgba(255,255,255,0) 45%), #f6c343;
-    }
-    .ball.blue  {
-      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.75), rgba(255,255,255,0) 45%), #3b82f6; color:#06101a;
-    }
-    .ball.red   {
-      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.75), rgba(255,255,255,0) 45%), #ef4444; color:#06101a;
-    }
-    .ball.gray  {
-      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.75), rgba(255,255,255,0) 45%), #9ca3af; color:#06101a;
-    }
-    .ball.green {
-      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.75), rgba(255,255,255,0) 45%), #22c55e; color:#06101a;
-    }
-
-    @keyframes pop{
-      from{ transform: translateY(4px) scale(.985); opacity:.6; }
-      to{ transform: translateY(0) scale(1); opacity:1; }
-    }
-
-    .meta{
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      color:var(--muted); font-size:13px;
-      margin-top:12px;
-    }
-
-    .history{
-      margin:0; padding-left:18px;
-      color:var(--muted);
-      font-size:14px;
-      max-height: 300px;
-      overflow:auto;
-    }
-    .history li{
-      margin:8px 0;
-    }
-    .hint{
-      margin:0; color:var(--muted); font-size:13px;
-    }
-
-    /* 색상 안내 */
-    .legend{
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-top:10px;
-    }
-    .tag{
-      display:inline-flex; gap:8px; align-items:center;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      padding:6px 10px;
-      border-radius: 999px;
-      font-size:12px;
-      color: var(--muted);
-    }
-
-    body.light-mode .tag {
-        background: rgba(0,0,0,.04);
-    }
-
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);
-      box-shadow: inset 2px 2px 4px rgba(255,255,255,.25);
-    }
-    .dot.yellow{
-      background:#f6c343;
-    }
-    .dot.blue{
-      background:#3b82f6;
-    }
-    .dot.red{
-      background:#ef4444;
-    }
-    .dot.gray{
-      background:#9ca3af;
-    }
-    .dot.green{
-      background:#22c55e;
-    }
-
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: var(--card);
-      border:1px solid var(--line);
-      color: var(--text);
-      padding:10px 12px;
-      border-radius: 14px;
-      box-shadow: 0 18px 55px rgba(0,0,0,.35);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      font-size: 13px;
-      z-index: 999;
-    }
-    .toast.show{
-      opacity:1;
-      transform: translateX(-50%) translateY(-2px);
-    }
-
-    @media (max-width: 900px){
-      .content{
-        grid-template-columns:1fr;
-      }
-    }
   </style>
 </head>
 <body>
@@ -331,221 +181,49 @@
         <div class="brand">
           <div class="logo" aria-hidden="true"></div>
           <div>
-            <h1>로또 번호 추천기 (6/45) · 5세트</h1>
-            <p class="sub">“번호 추천”을 누르면 6개 번호가 들어있는 세트가 <b>한 번에 5개</b> 나와요.</p>
+            <h1>오늘 뭐먹지?</h1>
+            <p class="sub">고민되는 메뉴, 쉽고 빠르게 결정하세요!</p>
           </div>
         </div>
-        <div class="header-right-controls">
-          <nav class="main-nav">
-            <a href="today-menu.html" class="button-like">🍽️ 오늘 뭐먹지?</a>
-          </nav>
-          <div class="btn-row">
+        <div class="btn-row">
+            <nav class="main-nav">
+                <a href="index.html" class="button-like">🏠 홈</a>
+                <a href="today-menu.html" class="button-like">🎲 추천받기</a>
+            </nav>
             <button id="themeBtn" type="button">☀️</button>
-            <button class="primary" id="pickBtn" type="button">🎲 번호 추천(5세트)</button>
-            <button id="copyBtn" type="button" disabled>📋 5세트 복사</button>
-            <button id="resetBtn" type="button">🔄 기록 지우기</button>
-          </div>
         </div>
       </header>
 
-      <div class="content">
-        <section class="panel" aria-label="추천 번호 5세트">
-          <h2 style="margin:0 0 6px; font-size:16px; letter-spacing:-.2px;">추천 번호</h2>
-          <p class="hint" id="emptyHint">아직 번호가 없어요. “번호 추천(5세트)”를 눌러주세요.</p>
-
-          <div class="sets" id="sets" aria-live="polite" aria-atomic="true"></div>
-
-          <div class="legend" aria-label="색상 구간 안내">
-            <span class="tag"><span class="dot yellow"></span>1–10</span>
-            <span class="tag"><span class="dot blue"></span>11–20</span>
-            <span class="tag"><span class="dot red"></span>21–30</span>
-            <span class="tag"><span class="dot gray"></span>31–40</span>
-            <span class="tag"><span class="dot green"></span>41–45</span>
-          </div>
-
-          <div class="meta">
-            <span id="stamp">—</span>
-            <span>세트 내부 번호는 중복 없이 6개(1~45)</span>
-          </div>
-        </section>
-
-        <aside class="panel" aria-label="추천 기록">
-          <h2 style="margin:0 0 10px; font-size:16px; letter-spacing:-.2px;">추천 기록</h2>
-          <ol class="history" id="history"></ol>
-          <p class="hint" style="margin-top:10px;">
-            “5세트 복사”는 마지막으로 생성한 5세트를 한 번에 복사해요.
-          </p>
-        </aside>
+      <div class="main-cta">
+        <h2 style="font-size: 28px; letter-spacing: -0.5px; margin-bottom: 10px;">점심, 저녁 메뉴가 고민될 땐?</h2>
+        <p style="font-size: 16px; color: var(--muted); margin-bottom: 25px;">버튼 하나로 간편하게 메뉴를 추천받아 보세요.</p>
+        <a href="today-menu.html" class="button-like primary">🎲 메뉴 추천받기</a>
       </div>
+
+      <section class="panel" aria-label="전체 메뉴 둘러보기">
+        <h2 style="margin:0 0 16px; font-size:18px; letter-spacing:-.2px;">전체 메뉴 둘러보기</h2>
+        <div class="menu-grid" id="menuGrid">
+          <!-- 메뉴 아이템이 동적으로 추가됩니다. -->
+        </div>
+      </section>
+
     </div>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="footer">
+    <div class="wrap">
+      <a href="about.html">소개</a>
+      <a href="contact.html">연락처</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <p>&copy; 2026 오늘 뭐먹지?. All Rights Reserved.</p>
+    </div>
+  </footer>
 
+  <script src="menu-data.js"></script>
   <script>
-    // ---------- Utilities ----------
     const $ = (id) => document.getElementById(id);
 
-    function showToast(message) {
-      const toast = $("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-      window.clearTimeout(showToast._t);
-      showToast._t = window.setTimeout(() => toast.classList.remove("show"), 1400);
-    }
-
-    function pad2(n){
-      return String(n).padStart(2, "0");
-    }
-    function timeStamp() {
-      const d = new Date();
-      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-    }
-
-    // 브라우저 crypto 기반 균등 분포에 가까운 난수
-    function randIntInclusive(min, max) {
-      const range = max - min + 1;
-      if (range <= 0) throw new Error("잘못된 범위");
-
-      const maxUint32 = 0xFFFFFFFF;
-      const limit = Math.floor((maxUint32 + 1) / range) * range;
-      const buf = new Uint32Array(1);
-
-      while (true) {
-        crypto.getRandomValues(buf);
-        const x = buf[0];
-        if (x < limit) return min + (x % range);
-      }
-    }
-
-    function pickOneSet() {
-      const set = new Set();
-      while (set.size < 6) set.add(randIntInclusive(1, 45));
-      return Array.from(set).sort((a, b) => a - b);
-    }
-
-    function pickFiveSets() {
-      return Array.from({ length: 5 }, () => pickOneSet());
-    }
-
-    // 번호에 따른 공 색상 클래스 반환
-    function getBallColorClass(n) {
-      if (n >= 1 && n <= 10) return "yellow";
-      if (n >= 11 && n <= 20) return "blue";
-      if (n >= 21 && n <= 30) return "red";
-      if (n >= 31 && n <= 40) return "gray";
-      return "green"; // 41~45
-    }
-
-    function renderFiveSets(sets) {
-      const setsEl = $("sets");
-      setsEl.innerHTML = "";
-
-      sets.forEach((nums, idx) => {
-        const wrap = document.createElement("div");
-        wrap.className = "set";
-
-        const head = document.createElement("div");
-        head.className = "set-head";
-
-        const title = document.createElement("div");
-        title.className = "set-title";
-        title.textContent = `세트 ${idx + 1}`;
-
-        const numsText = document.createElement("div");
-        numsText.className = "set-nums";
-        numsText.textContent = nums.join(", ");
-
-        head.appendChild(title);
-        head.appendChild(numsText);
-
-        const balls = document.createElement("div");
-        balls.className = "balls";
-
-        nums.forEach((n) => {
-          const ball = document.createElement("div");
-          ball.className = `ball ${getBallColorClass(n)}`;
-          ball.textContent = n;
-          ball.title = `${n}번`;
-          balls.appendChild(ball);
-        });
-
-        wrap.appendChild(head);
-        wrap.appendChild(balls);
-        setsEl.appendChild(wrap);
-      });
-    }
-
-    function addHistory(sets, stamp) {
-      const li = document.createElement("li");
-      const lines = sets.map((nums, i) => `세트 ${i + 1}: ${nums.join(", ")}`).join(" | ");
-      li.textContent = `${stamp} · ${lines}`;
-      $("history").prepend(li);
-    }
-
-    function formatForCopy(sets) {
-      return sets.map((nums, i) => `세트 ${i + 1}: ${nums.join(", ")}`).join("\n");
-    }
-
-    // ---------- State ----------
-    let currentSets = null;
-
-    // ---------- Events ----------
-    $("pickBtn").addEventListener("click", () => {
-      const sets = pickFiveSets();
-      currentSets = sets;
-
-      $("emptyHint")?.remove();
-      renderFiveSets(sets);
-
-      const stamp = timeStamp();
-      $("stamp").textContent = `추천 시각: ${stamp}`;
-      addHistory(sets, stamp);
-
-      $("copyBtn").disabled = false;
-      showToast("5세트를 추천했어요!");
-    });
-
-    $("copyBtn").addEventListener("click", async () => {
-      if (!currentSets) return;
-
-      const text = formatForCopy(currentSets);
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast("5세트를 복사했어요!");
-      } catch (e) {
-        try {
-          const ta = document.createElement("textarea");
-          ta.value = text;
-          ta.style.position = "fixed";
-          ta.style.left = "-9999px";
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          showToast("5세트를 복사했어요!");
-        } catch (e2) {
-          alert("복사 권한이 막혀 있어요. 브라우저 설정에서 클립보드 권한을 확인해 주세요.");
-        }
-      }
-    });
-
-    $("resetBtn").addEventListener("click", () => {
-      currentSets = null;
-      $("sets").innerHTML = "";
-      $("history").innerHTML = "";
-      $("stamp").textContent = "—";
-      $("copyBtn").disabled = true;
-
-      const hint = document.createElement("p");
-      hint.className = "hint";
-      hint.id = "emptyHint";
-      hint.textContent = '아직 번호가 없어요. “번호 추천(5세트)”를 눌러주세요.';
-      $("sets").insertAdjacentElement("beforebegin", hint);
-
-      showToast("기록을 지웠어요.");
-    });
-
+    // --- Theme Switcher ---
     const themeBtn = $("themeBtn");
     themeBtn.addEventListener("click", () => {
       document.body.classList.toggle("light-mode");
@@ -563,6 +241,94 @@
         themeBtn.textContent = "🌙";
       }
     } catch (e) {}
+
+    // --- Render Menu Grid ---
+    function getMenuLink(name) {
+      const map = {
+        '김치찌개': 'kimchi-jjigae',
+        '된장찌개': 'doenjang-jjigae',
+        '미역국': 'miyeok-guk',
+        '계란찜': 'gyeran-jjim',
+        '북엇국': 'bugeo-guk',
+        '계란볶음밥': 'gyeran-bokkeumbap',
+        '완탕': 'wantang',
+        '미소시루': 'miso-siru',
+        '일본식 계란말이': 'ilbonsik-gyeranmari',
+        '명란젓': 'myeongranjeot',
+        '스크램블 에그': 'scrambled-eggs',
+        '베이컨': 'bacon',
+        '소시지': 'sausage',
+        '팬케이크': 'pancakes',
+        '프렌치 토스트': 'french-toast',
+        '비빔밥': 'bibimbap',
+        '불고기': 'bulgogi',
+        '제육볶음': 'jeyuk-bokkeum',
+        '냉면': 'naengmyeon',
+        '칼국수': 'kalguksu',
+        '짜장면': 'jjajangmyeon',
+        '짬뽕': 'jjamppong',
+        '탕수육': 'tangsuyuk',
+        '마라탕': 'maratang',
+        '초밥': 'chobap',
+        '라멘': 'ramen',
+        '돈까스': 'donkkaseu',
+        '우동': 'udon',
+        '가츠동': 'katsudon',
+        '파스타': 'pasta',
+        '피자': 'pizza',
+        '햄버거': 'hamburger',
+        '스테이크': 'steak',
+        '리조또': 'risotto',
+        '삼겹살': 'samgyeopsal',
+        '갈비찜': 'galbi-jjim',
+        '닭갈비': 'dak-galbi',
+        '감자탕': 'gamja-tang',
+        '부대찌개': 'budae-jjigae',
+        '양꼬치': 'yang-kkochi',
+        '훠궈': 'huo-guo',
+        '동파육': 'dong-pa-yuk',
+        '깐풍기': 'kkanpunggi',
+        '야키니쿠': 'yakiniku',
+        '사시미': 'sashimi',
+        '스키야키': 'sukiyaki',
+        '장어덮밥': 'jangeo-deopbap',
+        '바베큐 립': 'barbecue-ribs',
+        '연어 스테이크': 'salmon-steak',
+        '라자냐': 'lasagna'
+      };
+      return `menus/${map[name] || name}.html`;
+    }
+
+    function renderMenuGrid() {
+      const menuGrid = $("menuGrid");
+      const allMenus = new Set();
+
+      // Collect all unique menu items from menuData
+      for (const mealType in menuData) {
+        if (typeof menuData[mealType] === 'object' && menuData[mealType] !== null) {
+          for (const category in menuData[mealType]) {
+            if (Array.isArray(menuData[mealType][category])) {
+              menuData[mealType][category].forEach(menu => allMenus.add(menu));
+            }
+          }
+        }
+      }
+
+      const sortedMenus = Array.from(allMenus).sort();
+      
+      sortedMenus.forEach(menu => {
+        const a = document.createElement("a");
+        a.href = getMenuLink(menu);
+        a.className = "menu-item";
+        a.textContent = menu;
+        menuGrid.appendChild(a);
+      });
+    }
+
+    // --- Initial Load ---
+    document.addEventListener("DOMContentLoaded", () => {
+      renderMenuGrid();
+    });
 
   </script>
 </body>
