@@ -66,8 +66,16 @@
     .main-nav { display: flex; gap: 10px; }
     body.light-mode .button-like { background: rgba(0,0,0,.04); }
     body.light-mode .button-like:hover { background: rgba(0,0,0,.08); }
+    .content { text-align: center; }
     .content h2 { font-size: 24px; text-align: center; margin-bottom: 24px; }
     .content p { color: var(--muted); }
+    .lotto-game { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+    .lotto-number { width: 40px; height: 40px; border-radius: 50%; background: #eee; color: #333; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; }
+    .ball-yellow { background-color: #fbc400; color: #fff; }
+    .ball-blue { background-color: #69c8f2; color: #fff; }
+    .ball-red { background-color: #ff7272; color: #fff; }
+    .ball-gray { background-color: #aaa; color: #fff; }
+    .ball-green { background-color: #b0d840; color: #fff; }
   </style>
 </head>
 <body>
@@ -91,8 +99,10 @@
       </header>
       
       <main class="content">
-        <h2>로또 추천기</h2>
-        <p>로또 추천기 페이지입니다. 이곳에 로또 추천 기능이 추가될 예정입니다.</p>
+        <h2>로또 번호 추천기</h2>
+        <p>버튼을 눌러 로또 번호를 추천 받아보세요!</p>
+        <button id="generateLotto" class="button-like">5게임 생성</button>
+        <div id="lottoGames"></div>
       </main>
 
     </div>
@@ -103,6 +113,7 @@
       <a href="about.html">소개</a>
       <a href="contact.html">연락처</a>
       <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms-of-service.html">이용약관</a>
       <p>&copy; 2026 오늘 뭐먹지?. All Rights Reserved.</p>
     </div>
   </footer>
@@ -122,6 +133,40 @@
         themeBtn.textContent = "🌙";
       }
     } catch (e) {}
+
+    document.getElementById("generateLotto").addEventListener("click", () => {
+      const lottoGamesDiv = document.getElementById("lottoGames");
+      lottoGamesDiv.innerHTML = "";
+      for (let i = 0; i < 5; i++) {
+        const gameDiv = document.createElement("div");
+        gameDiv.className = "lotto-game";
+        const numbers = new Set();
+        while(numbers.size < 6) {
+          numbers.add(Math.floor(Math.random() * 45) + 1);
+        }
+        const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
+        sortedNumbers.forEach(number => {
+          const numberDiv = document.createElement("div");
+          numberDiv.className = "lotto-number";
+          
+          if (number >= 1 && number <= 10) {
+            numberDiv.classList.add("ball-yellow");
+          } else if (number >= 11 && number <= 20) {
+            numberDiv.classList.add("ball-blue");
+          } else if (number >= 21 && number <= 30) {
+            numberDiv.classList.add("ball-red");
+          } else if (number >= 31 && number <= 40) {
+            numberDiv.classList.add("ball-gray");
+          } else if (number >= 41 && number <= 45) {
+            numberDiv.classList.add("ball-green");
+          }
+
+          numberDiv.textContent = number;
+          gameDiv.appendChild(numberDiv);
+        });
+        lottoGamesDiv.appendChild(gameDiv);
+      }
+    });
   </script>
 </body>
 </html>
