@@ -172,6 +172,45 @@
       gap: 10px;
     }
 
+    .contact-form { display: grid; gap: 16px; margin-top: 32px; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .contact-form label { display: block; margin-bottom: 8px; color: var(--text); font-weight: bold; }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form button[type="submit"] {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: var(--bg-dark);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    .contact-form button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    body.light-mode .contact-form button[type="submit"] {
+      color: var(--text-dark);
+    }
   </style>
 </head>
 <body>
@@ -205,6 +244,23 @@
         <div class="menu-grid" id="menuGrid">
           <!-- 메뉴 아이템이 동적으로 추가됩니다. -->
         </div>
+      </section>
+
+      <section class="panel" aria-label="제휴 문의">
+        <h2 style="margin:0 0 16px; font-size:18px; letter-spacing:-.2px;">제휴 문의</h2>
+        <form class="contact-form" action="https://formspree.io/f/xzdarnow" method="POST">
+          <label for="name">이름:</label>
+          <input type="text" id="name" name="name" required>
+
+          <label for="email">이메일:</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="message">메시지:</label>
+          <textarea id="message" name="message" required></textarea>
+
+          <input type="hidden" name="_subject" value="오늘 뭐먹지? 제휴 문의">
+          <button type="submit">문의 보내기</button>
+        </form>
       </section>
 
     </div>
