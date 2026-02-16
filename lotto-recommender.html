@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>로또 추천기 - 오늘 뭐먹지?</title>
+  <meta name="description" content="로또 추천기" />
+  <style>
+    :root {
+      --accent1: #6ee7ff;
+      --accent2: #a78bfa;
+      --bg-dark: #0b1220;
+      --card-dark: #101a2f;
+      --text-dark: #e8eefc;
+      --muted-dark: #a8b3d6;
+      --line-dark: rgba(255, 255, 255, .12);
+      --bg-gradient-start-dark: #070b14;
+      --bg-light: #f0f2f5;
+      --card-light: #ffffff;
+      --text-light: #1c1e21;
+      --muted-light: #606770;
+      --line-light: rgba(0, 0, 0, .1);
+      --bg-gradient-start-light: #f0f2f5;
+    }
+    body {
+      --bg: var(--bg-dark);
+      --card: var(--card-dark);
+      --text: var(--text-dark);
+      --muted: var(--muted-dark);
+      --line: var(--line-dark);
+      --bg-gradient-start: var(--bg-gradient-start-dark);
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(110,231,255,.18), transparent 60%),
+        radial-gradient(900px 700px at 85% 20%, rgba(167,139,250,.16), transparent 55%),
+        linear-gradient(180deg, var(--bg-gradient-start), var(--bg));
+      line-height:1.8;
+      min-height:100vh;
+      display:flex;
+      flex-direction: column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:24px 14px;
+    }
+    body.light-mode {
+      --bg: var(--bg-light);
+      --card: var(--card-light);
+      --text: var(--text-light);
+      --muted: var(--muted-light);
+      --line: var(--line-light);
+      --bg-gradient-start: var(--bg-gradient-start-light);
+      background: var(--bg-light);
+    }
+    .wrap{ width:min(1000px, 100%); }
+    .card{ border:1px solid var(--line); background:var(--card); border-radius:22px; padding:22px; box-shadow: 0 16px 50px rgba(0,0,0,.25); width: 100%; margin-top: 20px; }
+    header{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:16px; }
+    .brand{ display:flex; align-items:center; gap:10px; }
+    .logo{ width:34px; height:34px; border-radius:12px; background: linear-gradient(135deg, var(--accent1), var(--accent2)); box-shadow: 0 10px 28px rgba(110,231,255,.15); }
+    h1{ margin:0; font-size:20px; letter-spacing:-.2px; color: var(--text); }
+    .sub{ margin:0; color:var(--muted); font-size:14px; }
+    .btn-row{ display:flex; gap:10px; flex-wrap:wrap; }
+    .button-like { cursor:pointer; border:1px solid var(--line); padding:10px 14px; border-radius:14px; background:rgba(255,255,255,.06); color:var(--text); font-weight:800; font-size:14px; display:inline-flex; gap:8px; align-items:center; transition: transform .12s ease, background .12s ease; text-decoration: none; }
+    .button-like:hover { transform: translateY(-1px); background:rgba(255,255,255,.10); }
+    .main-nav { display: flex; gap: 10px; }
+    body.light-mode .button-like { background: rgba(0,0,0,.04); }
+    body.light-mode .button-like:hover { background: rgba(0,0,0,.08); }
+    .content h2 { font-size: 24px; text-align: center; margin-bottom: 24px; }
+    .content p { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>오늘 뭐먹지?</h1>
+            <p class="sub">고민되는 메뉴, 쉽고 빠르게 결정하세요!</p>
+          </div>
+        </div>
+        <div class="btn-row">
+            <nav class="main-nav">
+                <a href="index.html" class="button-like">🏠 홈</a>
+                <a href="today-menu.html" class="button-like">🎲 추천받기</a>
+            </nav>
+            <button id="themeBtn" type="button">☀️</button>
+        </div>
+      </header>
+      
+      <main class="content">
+        <h2>로또 추천기</h2>
+        <p>로또 추천기 페이지입니다. 이곳에 로또 추천 기능이 추가될 예정입니다.</p>
+      </main>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap">
+      <a href="about.html">소개</a>
+      <a href="contact.html">연락처</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <p>&copy; 2026 오늘 뭐먹지?. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const themeBtn = document.getElementById("themeBtn");
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      const isLight = document.body.classList.contains("light-mode");
+      themeBtn.textContent = isLight ? "🌙" : "☀️";
+      try { localStorage.setItem('theme', isLight ? 'light' : 'dark'); } catch (e) {}
+    });
+    try {
+      const preferredTheme = localStorage.getItem('theme');
+      if (preferredTheme === 'light') {
+        document.body.classList.add("light-mode");
+        themeBtn.textContent = "🌙";
+      }
+    } catch (e) {}
+  </script>
+</body>
+</html>
